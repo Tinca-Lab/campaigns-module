@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  api:
+    image: public.ecr.aws/h7s2t1c0/08ad96e7-f668-4717-8417-1ca69481fb6d:latest
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    env_file:
+      - .env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      DATABASE_URI: ${DATABASE_URI}
+      VIRTUAL_HOST: api.spushing.com
+      VIRTUAL_PORT: 8000
+      LETSENCRYPT_HOST: api.spushing.com
+      LETSENCRYPT_EMAIL: info@madworksglobal.com
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
