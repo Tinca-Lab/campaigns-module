@@ -31,6 +31,9 @@ async function bootstrap(): Promise<void> {
     .setDescription('The Campaigns API')
     .setVersion('1.0.0')
     .addTag('Authentication')
+    .addTag('Campaigns')
+    .addTag('Applies')
+    .addTag('Companies')
     .addBearerAuth()
     .build();
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);

@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserGateway } from '../../../infrastructure/persistence/gateways/user.gateway';
 import { RegisterDto, UserType } from '../dto/register.dto';
 import * as bcrypt from 'bcryptjs';
+import { UserDocument } from '../../../infrastructure/persistence/schemas/user.schema';
 
 @Injectable()
 export class RegisterInteractor {
@@ -24,7 +25,7 @@ export class RegisterInteractor {
       throw new BadRequestException('Passwords do not match');
     }
 
-    const user = await this.userGateway.findOne({
+    const user: UserDocument = await this.userGateway.findOne({
       email: payload.email,
     });
 
@@ -35,10 +36,36 @@ export class RegisterInteractor {
     const salt: string = await bcrypt.genSalt();
     payload.password = await bcrypt.hash(payload.password, salt);
 
-    if (payload.type === UserType.USER || !payload.type) {
-      payload.permissions = ['read:user', 'write:user'];
+    if (!payload.type) {
+      payload.type = UserType.EMPLOYEE;
     }
 
-    return this.userGateway.create(payload);
+    if (payload.type === UserType.EMPLOYEE) {
+      payload.permissions = [
+        'read:self',
+        'write:self',
+        'read:campaign',
+        'read:apply',
+        'write:apply',
+        'delete:apply',
+      ];
+    }
+
+    if (payload.type === UserType.MANAGER) {
+      payload.permissions = [
+        'write:campaign',
+        'read:campaign',
+        'delete:campaign',
+        'read:user',
+        'write:user',
+        'delete:user',
+        'read:apply',
+      ];
+    }
+
+    return this.userGateway.create({
+      type: payload.type,
+      ...payload,
+    });
   }
 }

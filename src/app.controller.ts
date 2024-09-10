@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Permissions } from './application-core/auth/decorators/permissions.decorator';
+import { Permission } from './application-core/auth/decorators/permissions.decorator';
 import { PermissionGuard } from './application-core/auth/guard/permission.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
@@ -11,7 +11,6 @@ export class AppController {
   @Get()
   @ApiBearerAuth()
   @UseGuards(PermissionGuard)
-  @Permissions('read:user', 'write:user')
   getHello(): string {
     return this.appService.getHello();
   }

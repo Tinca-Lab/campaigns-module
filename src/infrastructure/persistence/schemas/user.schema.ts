@@ -12,8 +12,14 @@ export class User {
   email: string;
   @Prop({ required: true })
   password: string;
-  @Prop()
+  @Prop({ required: false })
   permissions?: string[];
+  @Prop({ required: true, default: 'EMPLOYEE' })
+  type: 'MANAGER' | 'EMPLOYEE';
+  @Prop({ required: true })
+  companyId: string;
+  @Prop({ required: true })
+  username: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

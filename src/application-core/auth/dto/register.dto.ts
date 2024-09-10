@@ -24,8 +24,15 @@ export class RegisterDto {
   })
   type?: UserType;
   permissions?: string[];
+  @ApiProperty()
+  @IsString()
+  companyId: string;
+  @ApiProperty()
+  @IsString() 
+  username: string;
 }
 
 export enum UserType {
-  USER = 'USER',
+  EMPLOYEE = 'EMPLOYEE',
+  MANAGER = 'MANAGER',
 }
