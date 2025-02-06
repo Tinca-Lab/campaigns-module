@@ -28,7 +28,7 @@ export class RegisterDto {
   @IsString()
   companyId: string;
   @ApiProperty()
-  @IsString() 
+  @IsString()
   username: string;
 }
 

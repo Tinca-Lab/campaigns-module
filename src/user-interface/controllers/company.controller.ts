@@ -10,7 +10,7 @@ import { UserDocument } from '../../infrastructure/persistence/schemas/user.sche
 export class CompanyController {
   constructor(
     private readonly findEmployeesByCompanyInteractor: FindEmployeesByCompanyInteractor,
-    private readonly UpdateEmployeeByIdInteractor: UpdateEmployeeByIdInteractor,
+    private readonly updateEmployeeByIdInteractor: UpdateEmployeeByIdInteractor,
   ) {}
 
   @Get('employees')
@@ -42,6 +42,6 @@ export class CompanyController {
     @Param('id') id: string,
     @Body() payload: any,
   ): Promise<UserDocument> {
-    return await this.UpdateEmployeeByIdInteractor.execute(id, payload);
+    return await this.updateEmployeeByIdInteractor.execute(id, payload);
   }
 }
