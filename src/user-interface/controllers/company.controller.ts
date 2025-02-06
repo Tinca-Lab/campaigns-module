@@ -1,4 +1,6 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Body, Param } from '@nestjs/common';
+import { UpdateEmployeeByIdInteractor } from './../../application-core/company/use-cases/updateEmployeeById.interactor';
+import { Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
 import { PermissionGuard } from '../../application-core/auth/guard/permission.guard';
 import { Permission } from '../../application-core/auth/decorators/permissions.decorator';
 import { FindEmployeesByCompanyInteractor } from '../../application-core/company/use-cases/findEmployeesByCompany.interactor';
@@ -8,6 +10,7 @@ import { UserDocument } from '../../infrastructure/persistence/schemas/user.sche
 export class CompanyController {
   constructor(
     private readonly findEmployeesByCompanyInteractor: FindEmployeesByCompanyInteractor,
+    private readonly UpdateEmployeeByIdInteractor: UpdateEmployeeByIdInteractor,
   ) {}
 
   @Get('employees')
@@ -30,5 +33,15 @@ export class CompanyController {
         sortBy,
       },
     );
+  }
+
+  @Put('employee/:id')
+  @UseGuards(PermissionGuard)
+  @Permission('write:campaign')
+  async update(
+    @Param('id') id: string,
+    @Body() payload: any,
+  ): Promise<UserDocument> {
+    return await this.UpdateEmployeeByIdInteractor.execute(id, payload);
   }
 }
