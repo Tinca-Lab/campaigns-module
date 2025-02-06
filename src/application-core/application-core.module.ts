@@ -22,6 +22,7 @@ import { FindAppliesByUserIdInteractor } from './apply/use-cases/findAppliesByUs
 import { LoginWithUsernameInteractor } from './auth/use-cases/loginWithUsername.interactor';
 import { FindAppliesByIdInteractor } from './apply/use-cases/findAppliesById.iteractor';
 import { UploadFileInteractor } from './apply/use-cases/uploadFile.interactor';
+import { UpdateEmployeeByIdInteractor } from './company/use-cases/updateEmployeeById.interactor';
 
 const SERVICES = [
   LoginInteractor,
@@ -30,6 +31,7 @@ const SERVICES = [
   //  Company
   FindCompanyByIdInteractor,
   FindEmployeesByCompanyInteractor,
+  UpdateEmployeeByIdInteractor,
   //   Campaign
   CreateCampaignInteractor,
   FindCampaignsInteractor,
