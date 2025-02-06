@@ -1,6 +1,7 @@
 import { Body, Param } from '@nestjs/common';
 import { UpdateEmployeeByIdInteractor } from './../../application-core/company/use-cases/updateEmployeeById.interactor';
-import { Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
+import { DeleteEmployeeInteractor } from './../../application-core/company/use-cases/deleteEmployee.interactor';
+import { Controller, Get, Put, Delete, Query, UseGuards } from '@nestjs/common';
 import { PermissionGuard } from '../../application-core/auth/guard/permission.guard';
 import { Permission } from '../../application-core/auth/decorators/permissions.decorator';
 import { FindEmployeesByCompanyInteractor } from '../../application-core/company/use-cases/findEmployeesByCompany.interactor';
@@ -10,7 +11,8 @@ import { UserDocument } from '../../infrastructure/persistence/schemas/user.sche
 export class CompanyController {
   constructor(
     private readonly findEmployeesByCompanyInteractor: FindEmployeesByCompanyInteractor,
-    private readonly UpdateEmployeeByIdInteractor: UpdateEmployeeByIdInteractor,
+    private readonly updateEmployeeByIdInteractor: UpdateEmployeeByIdInteractor,
+    private readonly deleteEmployeeInteractor: DeleteEmployeeInteractor,
   ) {}
 
   @Get('employees')
@@ -42,6 +44,15 @@ export class CompanyController {
     @Param('id') id: string,
     @Body() payload: any,
   ): Promise<UserDocument> {
-    return await this.UpdateEmployeeByIdInteractor.execute(id, payload);
+    return await this.updateEmployeeByIdInteractor.execute(id, payload);
+  }
+
+  @Delete('employee/:id')
+  @UseGuards(PermissionGuard)
+  @Permission('delete:campaign')
+  async delete(@Param('id') id: string): Promise<any> {
+    return await this.deleteEmployeeInteractor.execute({
+      id,
+    });
   }
 }

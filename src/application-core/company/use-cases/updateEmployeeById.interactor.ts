@@ -8,10 +8,10 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UpdateEmployeeByIdInteractor {
-  constructor(private readonly UserGateway: UserGateway) {}
+  constructor(private readonly userGateway: UserGateway) {}
 
   async execute(id: string, payload: any): Promise<any> {
-    const user: any = await this.UserGateway.findById(id);
+    const user: any = await this.userGateway.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -33,6 +33,6 @@ export class UpdateEmployeeByIdInteractor {
     const salt: string = await bcrypt.genSalt();
     payload.password = await bcrypt.hash(payload.password, salt);
 
-    return this.UserGateway.updateById(id, payload);
+    return this.userGateway.updateById(id, payload);
   }
 }
