@@ -35,7 +35,6 @@ export class UploadFileInteractor {
       await this.s3.send(command);
       return `${cdnUrl}/${bucketParams.Key}`;
     } catch (e) {
-      console.log('Error: ', e);
       throw new BadRequestException(e.message);
     }
   }
