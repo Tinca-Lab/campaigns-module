@@ -103,6 +103,9 @@ export class NotificationGateway
       companyId: payload.companyId,
     });
     const clients: string[] = this.clients.get(payload.companyId);
+    if (!clients) {
+      return;
+    }
     clients.forEach((client: string): void => {
       this.server.to(client).emit('apply.created', event);
     });

@@ -9,8 +9,8 @@ async function bootstrap(): Promise<void> {
   const app: NestExpressApplication =
     await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useBodyParser('json', { limit: '10mb' });
-  app.useBodyParser('urlencoded', { extended: true, limit: '10mb' });
+  app.useBodyParser('json', { limit: '15mb' });
+  app.useBodyParser('urlencoded', { extended: true, limit: '15mb' });
 
   app.enableCors({
     origin: '*',
